@@ -76,9 +76,9 @@ spec:
 {{ tpl .Values.keycloak.lifecycleHooks . | indent 12 }}
         {{- end }}
           env:
-          {{- if .Release.IsInstall }}
+          {{- if and .Release.IsInstall .Values.keycloak.admin.create }}
             - name: KEYCLOAK_USER
-              value: {{ .Values.keycloak.username }}
+              value: {{ .Values.keycloak.admin.username }}
             - name: KEYCLOAK_PASSWORD
               valueFrom:
                 secretKeyRef:
