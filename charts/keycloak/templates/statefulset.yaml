@@ -92,9 +92,9 @@ spec:
           {{- end }}
           {{- if $highAvailability }}
             - name: JGROUPS_DISCOVERY_PROTOCOL
-              value: "dns.DNS_PING"
+              value: "kubernetes.KUBE_PING"
             - name: JGROUPS_DISCOVERY_PROPERTIES
-              value: "dns_query={{ template "keycloak.fullname" . }}-headless.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}"
+              value: "{port_range=>0,namespace=>{{ .Release.Namespace }},labels=>release={{ .Release.Name }}}"
           {{- end }}
 {{ include "keycloak.dbEnvVars" . | indent 12 }}
 {{- with .Values.keycloak.extraEnv }}
