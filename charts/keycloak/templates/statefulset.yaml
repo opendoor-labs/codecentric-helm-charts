@@ -33,6 +33,7 @@ spec:
 {{ toYaml .Values.keycloak.podAnnotations | indent 8 }}
 {{- end }}
     spec:
+      serviceAccountName: {{ template "keycloak.name" . }}
 {{- with .Values.keycloak.hostAliases }}
       hostAliases:
 {{ toYaml . | indent 8 }}
