@@ -34,9 +34,11 @@ spec:
     - host: {{ . }}
       http:
         paths:
-          - path: {{ $ingress.path }}
+          {{- range $ingress.paths }}
+          - path: {{ . }}
             backend:
               serviceName: {{ template "keycloak.fullname" $ }}-https
               servicePort: https
+          {{- end }}
   {{- end }}
 {{- end -}}
