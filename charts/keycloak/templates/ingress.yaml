@@ -1,18 +1,18 @@
-{{- $ingress := .Values.keycloak.ingress -}}
-{{- if $ingress.enabled -}}
+{{- range $i, $ingress := .Values.keycloak.ingresses }}
+---
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: {{ template "keycloak.fullname" . }}
+  name: {{ template "keycloak.fullname" $ }}-{{ $ingress.name }}
 {{- with $ingress.annotations }}
   annotations:
 {{ toYaml . | indent 4 }}
 {{- end }}
   labels:
-    app: {{ template "keycloak.name" . }}
-    chart: {{ template "keycloak.chart" . }}
-    heritage: {{ .Release.Service }}
-    release: {{ .Release.Name }}
+    app: {{ template "keycloak.name" $ }}
+    chart: {{ template "keycloak.chart" $ }}
+    heritage: {{ $.Release.Service }}
+    release: {{ $.Release.Name }}
 {{- with $ingress.labels }}
 {{ toYaml . | indent 4 }}
 {{- end }}
@@ -24,7 +24,9 @@ spec:
       {{- range .hosts }}
         - {{ . }}
       {{- end }}
-      secretName: {{ .secretName }}
+      {{- with .secretName }}
+      secretName: {{ . }}
+      {{- end }}
   {{- end }}
 {{- end }}
   rules:
