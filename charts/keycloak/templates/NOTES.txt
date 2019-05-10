@@ -5,11 +5,11 @@ Keycloak can be accessed:
 
   {{ template "keycloak.fullname" . }}-https.{{ .Release.Namespace }}.svc.cluster.local
 
-{{- if .Values.keycloak.ingress.enabled }}
+{{- range .Values.keycloak.ingresses }}
 
 * From outside the cluster:
 
-{{- range .Values.keycloak.ingress.hosts }}
+{{- range .hosts }}
   - https://{{ . }}
 {{- end }}
 
